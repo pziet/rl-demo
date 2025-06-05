@@ -24,23 +24,32 @@ def train(
         state = env.reset()
         done = False
         winner = None
+        last_move_agent = (None, None)
+        last_move_opponent = (None, None)
 
         while not done:
             if env.current_player == agent.symbol:
                 action = agent.choose_action(env)
                 next_state, reward, done, winner = env.step(action)
                 agent.update(state, action, reward, next_state, done)
+                last_move_agent = (state, action)
             else:
                 action = opponent_agent.choose_action(env)
                 next_state, reward, done, winner = env.step(action)
                 if isinstance(opponent_agent, QAgent):
                     opponent_agent.update(state, action, reward, next_state, done)
+                    last_move_opponent = (state, action)
             state = next_state
 
         if winner == agent.symbol:
             wins += 1
+            if isinstance(opponent_agent, QAgent) and last_move_opponent[0] is not None:
+                ls, la = last_move_opponent
+                opponent_agent.update(ls, la, -1, state, True)
         elif winner == env.PLAYER_O:
             losses += 1
+            ls, la = last_move_agent
+            agent.update(ls, la, -1, state, True)
         else:
             draws += 1
 
