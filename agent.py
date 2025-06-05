@@ -47,3 +47,22 @@ class RandomAgent:
 
     def update(self, *args, **kwargs):
         pass
+
+
+class HumanAgent:
+    """Simple agent that queries the user for moves."""
+
+    def choose_action(self, env, explore=True):  # explore flag ignored
+        valid_actions = env.available_actions()
+        while True:
+            try:
+                move = int(input(f"Choose your move {valid_actions}: "))
+            except ValueError:
+                print("Please enter a number.")
+                continue
+            if move in valid_actions:
+                return move
+            print("Invalid move. Try again.")
+
+    def update(self, *args, **kwargs):
+        pass

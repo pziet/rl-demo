@@ -26,14 +26,21 @@ This creates `q_table.pkl` which stores the learned Q-values.
 
 ## Playing
 
-Use `play.py` to play games between agents of different abilities. The `--x` and `--o` options select the type of agent playing as X and O:
+Use `play.py` to play games between agents of different abilities or even play yourself. The `--x` and `--o` options select the type of agent playing as X and O:
 
 - `trained` &ndash; load Q-values from `q_table.pkl`
 - `untrained` &ndash; fresh Q-learning agent (acts mostly randomly)
 - `random` &ndash; completely random moves
+- `human` &ndash; you control this player via the terminal
 
 Example: play a trained X against an untrained O:
 
 ```bash
 python play.py --x trained --o untrained
+```
+
+To play against the trained agent yourself as O:
+
+```bash
+python play.py --x trained --o human
 ```
