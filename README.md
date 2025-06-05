@@ -30,6 +30,12 @@ For example, a longer self-play session with epsilon decay:
 python train.py --episodes 100000 --opponent self --epsilon-decay 0.995
 ```
 
+If you want to inspect the training process in detail, enable debug output:
+
+```bash
+python train.py --debug --debug-episodes 3
+```
+
 This creates `q_table.pkl` which stores the learned Q-values.
 
 ## Playing

@@ -10,6 +10,8 @@ def train(
     log_interval=500,
     epsilon_decay=None,
     opponent="random",
+    debug=False,
+    debug_episodes=5,
 ):
     env = TicTacToe()
     agent = QAgent(env.PLAYER_X, epsilon_decay=epsilon_decay)
@@ -22,6 +24,12 @@ def train(
 
     for episode in range(1, episodes + 1):
         state = env.reset()
+        if debug and episode <= debug_episodes:
+            print(f"\n=== Episode {episode} start ===")
+            print(f"Initial board: {state}")
+            print(f"Agent epsilon: {agent.epsilon}")
+            if isinstance(opponent_agent, QAgent):
+                print(f"Opponent epsilon: {opponent_agent.epsilon}")
         done = False
         winner = None
         last_move_agent = (None, None)
@@ -32,6 +40,10 @@ def train(
                 action = agent.choose_action(env)
                 next_state, reward, done, winner = env.step(action)
                 agent.update(state, action, reward, next_state, done)
+                if debug and episode <= debug_episodes:
+                    print(
+                        f"Agent action: {action}, reward: {reward}, next state: {next_state}"
+                    )
                 last_move_agent = (state, action)
             else:
                 action = opponent_agent.choose_action(env)
@@ -39,7 +51,15 @@ def train(
                 if isinstance(opponent_agent, QAgent):
                     opponent_agent.update(state, action, reward, next_state, done)
                     last_move_opponent = (state, action)
+                    if debug and episode <= debug_episodes:
+                        print(
+                            f"Opponent action: {action}, reward: {reward}, next state: {next_state}"
+                        )
             state = next_state
+
+        if debug and episode <= debug_episodes:
+            print(f"Episode {episode} finished. Winner: {winner}")
+            print(f"Final state: {state}")
 
         if winner == agent.symbol:
             wins += 1
@@ -78,6 +98,8 @@ def main():
     parser.add_argument("--epsilon-decay", type=float, default=0.999)
     parser.add_argument("--opponent", choices=["random", "self"], default="random")
     parser.add_argument("--no-verbose", dest="verbose", action="store_false")
+    parser.add_argument("--debug", action="store_true", help="Enable verbose debug output")
+    parser.add_argument("--debug-episodes", type=int, default=5, help="Number of episodes to print detailed debug info for")
     args = parser.parse_args()
     train(
         episodes=args.episodes,
@@ -86,6 +108,8 @@ def main():
         log_interval=args.log_interval,
         epsilon_decay=args.epsilon_decay,
         opponent=args.opponent,
+        debug=args.debug,
+        debug_episodes=args.debug_episodes,
     )
 
 
