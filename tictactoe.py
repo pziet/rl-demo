@@ -47,9 +47,24 @@ class TicTacToe:
         return None
 
     def render(self):
-        symbols = {self.PLAYER_X: 'X', self.PLAYER_O: 'O', self.EMPTY: ' '}
-        for i in range(3):
-            row = [symbols[self.board[3*i+j]] for j in range(3)]
-            print('|'.join(row))
-            if i < 2:
-                print('-'*5)
+        """Pretty print the board.
+
+        Empty squares show their numeric position so users know which
+        value to enter for a move.
+        """
+
+        symbols = {self.PLAYER_X: 'X', self.PLAYER_O: 'O'}
+
+        display = []
+        for i, value in enumerate(self.board):
+            if value == self.EMPTY:
+                display.append(str(i))
+            else:
+                display.append(symbols[value])
+
+        for row in range(3):
+            start = row * 3
+            cells = display[start:start + 3]
+            print(f" {cells[0]} | {cells[1]} | {cells[2]} ")
+            if row < 2:
+                print("---+---+---")

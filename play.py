@@ -18,18 +18,20 @@ def load_agent(name, symbol):
 def play_game(x_agent, o_agent, render=True):
     env = TicTacToe()
     env.reset()
+    if render:
+        env.render()
+        print()
+
     done = False
     while not done:
-        if render:
-            env.render()
-            print()
         if env.current_player == env.PLAYER_X:
             action = x_agent.choose_action(env, explore=False)
         else:
             action = o_agent.choose_action(env, explore=False)
         state, reward, done, winner = env.step(action)
-    if render:
-        env.render()
+        if render:
+            env.render()
+            print()
     if winner == env.PLAYER_X:
         print("X wins!")
     elif winner == env.PLAYER_O:
