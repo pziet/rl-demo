@@ -3,6 +3,17 @@
 This repo contains a minimal reinforcement learning demo for Tic Tac Toe.
 It uses a simple Q-learning agent.
 
+## Setup
+
+Install [`uv`](https://docs.astral.sh/uv/) and create a virtual environment:
+
+```bash
+pip install uv
+uv venv .venv
+source .venv/bin/activate
+uv pip install -e .
+```
+
 ## Training
 
 Run `train.py` to train the agent against a random opponent:
