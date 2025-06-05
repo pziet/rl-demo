@@ -2,15 +2,26 @@ import random
 import pickle
 
 class QAgent:
-    def __init__(self, symbol, epsilon=0.1, alpha=0.5, gamma=0.9):
+    def __init__(self, symbol, epsilon=0.1, alpha=0.5, gamma=0.9, epsilon_decay=None):
         self.q = {}
         self.symbol = symbol
         self.epsilon = epsilon
         self.alpha = alpha
         self.gamma = gamma
+        self.epsilon_decay = epsilon_decay
 
     def get_q(self, state, action):
         return self.q.get((state, action), 0.0)
+
+    def decay_epsilon(self):
+        if self.epsilon_decay:
+            self.epsilon *= self.epsilon_decay
+            if self.epsilon < 0.01:
+                self.epsilon = 0.01
+
+    @staticmethod
+    def available_actions_from_state(state):
+        return [i for i, v in enumerate(state) if v == 0]
 
     def choose_action(self, env, explore=True):
         actions = env.available_actions()
@@ -25,8 +36,9 @@ class QAgent:
         old_q = self.get_q(state, action)
         next_max = 0
         if not done:
-            next_actions = [self.get_q(next_state, a) for a in range(9)]
-            next_max = max(next_actions)
+            actions = self.available_actions_from_state(next_state)
+            if actions:
+                next_max = max(self.get_q(next_state, a) for a in actions)
         new_q = old_q + self.alpha * (reward + self.gamma * next_max - old_q)
         self.q[(state, action)] = new_q
 

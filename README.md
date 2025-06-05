@@ -16,10 +16,18 @@ uv pip install -e .
 
 ## Training
 
-Run `train.py` to train the agent against a random opponent:
+Run `train.py` to train the agent. By default it plays against a random
+opponent, but you can enable self-play with `--opponent self`.
+Exploration decreases over time via `--epsilon-decay`.
 
 ```bash
 python train.py
+```
+
+For example, a longer self-play session with epsilon decay:
+
+```bash
+python train.py --episodes 100000 --opponent self --epsilon-decay 0.995
 ```
 
 This creates `q_table.pkl` which stores the learned Q-values.
