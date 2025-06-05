@@ -37,5 +37,3 @@ Example: play a trained X against an untrained O:
 ```bash
 python play.py --x trained --o untrained
 ```
-
-
