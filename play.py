@@ -1,6 +1,6 @@
 import argparse
 from tictactoe import TicTacToe
-from agent import QAgent, RandomAgent
+from agent import QAgent, RandomAgent, HumanAgent
 
 
 def load_agent(name, symbol):
@@ -10,6 +10,8 @@ def load_agent(name, symbol):
         return agent
     if name == 'untrained':
         return QAgent(symbol)
+    if name == 'human':
+        return HumanAgent()
     return RandomAgent()
 
 
@@ -38,8 +40,9 @@ def play_game(x_agent, o_agent, render=True):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--x', choices=['trained', 'untrained', 'random'], default='trained')
-    parser.add_argument('--o', choices=['trained', 'untrained', 'random'], default='random')
+    choices = ['trained', 'untrained', 'random', 'human']
+    parser.add_argument('--x', choices=choices, default='trained')
+    parser.add_argument('--o', choices=choices, default='random')
     args = parser.parse_args()
     x_agent = load_agent(args.x, TicTacToe.PLAYER_X)
     o_agent = load_agent(args.o, TicTacToe.PLAYER_O)
