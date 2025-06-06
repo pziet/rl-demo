@@ -46,19 +46,39 @@ class TicTacToe:
                 return self.PLAYER_O
         return None
 
-    def render(self):
+    def render(self, use_emoji=False):
         """Pretty print the board.
 
         Empty squares show their numeric position so users know which
         value to enter for a move.
+
+        Parameters
+        ----------
+        use_emoji : bool, optional
+            If ``True`` render X and O as emoji for a more colourful board.
         """
 
-        symbols = {self.PLAYER_X: 'X', self.PLAYER_O: 'O'}
+        if use_emoji:
+            symbols = {self.PLAYER_X: "❌", self.PLAYER_O: "⭕"}
+        else:
+            symbols = {self.PLAYER_X: 'X', self.PLAYER_O: 'O'}
+
+        digit_emoji = [
+            "0️⃣",
+            "1️⃣",
+            "2️⃣",
+            "3️⃣",
+            "4️⃣",
+            "5️⃣",
+            "6️⃣",
+            "7️⃣",
+            "8️⃣",
+        ]
 
         display = []
         for i, value in enumerate(self.board):
             if value == self.EMPTY:
-                display.append(str(i))
+                display.append(digit_emoji[i] if use_emoji else str(i))
             else:
                 display.append(symbols[value])
 

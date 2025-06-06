@@ -19,7 +19,8 @@ def play_game(x_agent, o_agent, render=True):
     env = TicTacToe()
     env.reset()
     if render:
-        env.render()
+        print("Game start:")
+        env.render(use_emoji=True)
         print()
 
     done = False
@@ -28,9 +29,12 @@ def play_game(x_agent, o_agent, render=True):
             action = x_agent.choose_action(env, explore=False)
         else:
             action = o_agent.choose_action(env, explore=False)
+        player = env.current_player
         state, reward, done, winner = env.step(action)
         if render:
-            env.render()
+            symbol = "X" if player == env.PLAYER_X else "O"
+            print(f"Player {symbol} moved:")
+            env.render(use_emoji=True)
             print()
     if winner == env.PLAYER_X:
         print("X wins!")
