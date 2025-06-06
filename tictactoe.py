@@ -59,7 +59,10 @@ class TicTacToe:
         """
 
         if use_emoji:
-            symbols = {self.PLAYER_X: "❌", self.PLAYER_O: "⭕"}
+            # Differentiate player symbols with colours so X and O are
+            # more visually distinct. X remains the red cross, while O
+            # becomes a green circle.
+            symbols = {self.PLAYER_X: "❌", self.PLAYER_O: "🟢"}
         else:
             symbols = {self.PLAYER_X: 'X', self.PLAYER_O: 'O'}
 
